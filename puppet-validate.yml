@@ -12,8 +12,7 @@ before_script:
     - gem install facter hiera json_pure
     - gem list
 
-puppet_validate_latest:
-  stage: puppet_validate
+.puppet_validate_latest:
   script:
     - gem install puppet
     - puppet --version
@@ -21,7 +20,6 @@ puppet_validate_latest:
     - find . -type f -name '*.pp' -print0 | xargs -t0n1 puppet parser validate
     
 .puppet_validate_version:
-  stage: puppet_validate
   script:
     - gem install puppet -v "$PUPPET_VERSION"
     - puppet --version

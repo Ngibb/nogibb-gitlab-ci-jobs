@@ -1,5 +1,5 @@
 before_script:
   - apt-get install -y yamllint
 
-yamllint_default:
+.yamllint_default:
   - find . -type f \( -name '*.yaml' -o -name '*.yml' \) | xargs yamllint
