@@ -5,14 +5,17 @@ image:
     - '/usr/bin/env'
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
+before_script:
+    - echo $GEM_HOME
+    - export PATH="$GEM_HOME/bin:$PATH"
+    - ruby --version
+    - gem install facter hiera json_pure
+    - gem list
 
 puppet_validate_latest:
   stage: puppet_validate
   script:
-    - echo $GEM_HOME
-    - export PATH="$GEM_HOME/bin:$PATH"
-    - ruby --version
-    - gem install puppet facter hiera json_pure
+    - gem install puppet
     - puppet --version
     - gem list
     - find . -type f -name '*.pp' -print0 | xargs -t0n1 puppet parser validate
@@ -20,11 +23,7 @@ puppet_validate_latest:
 .puppet_validate_version:
   stage: puppet_validate
   script:
-    - echo $GEM_HOME
-    - export PATH="$GEM_HOME/bin:$PATH"
-    - ruby --version
     - gem install puppet -v "$PUPPET_VERSION"
     - puppet --version
-    - gem install facter hiera json_pure
     - gem list
     - find . -type f -name '*.pp' -print0 | xargs -t0n1 puppet parser validate
