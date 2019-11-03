@@ -1,5 +1,5 @@
 .yamllint_default:
-  image: debian:latest
+        image: python:buster
   script:
-    - apt-get install -y yamllint
+    - pip install yamllint
     - find . -type f \( -name '*.yaml' -o -name '*.yml' \) | xargs yamllint
