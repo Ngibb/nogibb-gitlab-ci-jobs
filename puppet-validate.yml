@@ -15,7 +15,7 @@ puppet_validate_latest:
     - gem install puppet facter hiera json_pure
     - puppet --version
     - gem list
-    - find manifests -type f -name '*.pp' -print0 | xargs -t0n1 puppet parser validate
+    - find . -type f -name '*.pp' -print0 | xargs -t0n1 puppet parser validate
     
 .puppet_validate_version:
   stage: puppet_validate
@@ -27,4 +27,4 @@ puppet_validate_latest:
     - puppet --version
     - gem install facter hiera json_pure
     - gem list
-    - find manifests -type f -name '*.pp' -print0 | xargs -t0n1 puppet parser validate
+    - find . -type f -name '*.pp' -print0 | xargs -t0n1 puppet parser validate

@@ -8,4 +8,4 @@
     - echo $GEM_HOME
     - export PATH="$GEM_HOME/bin:$PATH"
     - gem install puppet-lint
-    - find manifests -type f -name '*.pp' -print0 | xargs -t0n1 puppet-lint
+    - find . -type f -name '*.pp' -print0 | xargs -t0n1 puppet-lint
