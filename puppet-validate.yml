@@ -1,26 +1,31 @@
 #VALIDATE PUPPET
-image:
-  name: ruby
-  entrypoint:
-    - '/usr/bin/env'
-    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-
-before_script:
+.puppet_validate_latest:
+  image:
+    name: ruby
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  script:
     - echo $GEM_HOME
     - export PATH="$GEM_HOME/bin:$PATH"
     - ruby --version
     - gem install facter hiera json_pure
-    - gem list
-
-.puppet_validate_latest:
-  script:
     - gem install puppet
     - puppet --version
     - gem list
     - find . -type f -name '*.pp' -print0 | xargs -t0n1 puppet parser validate
     
 .puppet_validate_version:
+  image:
+    name: ruby
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   script:
+    - echo $GEM_HOME
+    - export PATH="$GEM_HOME/bin:$PATH"
+    - ruby --version
+    - gem install facter hiera json_pure
     - gem install puppet -v "$PUPPET_VERSION"
     - puppet --version
     - gem list

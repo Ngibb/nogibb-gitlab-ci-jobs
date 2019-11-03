@@ -1,15 +1,11 @@
-image:
-  name: ruby
-  entrypoint:
-    - '/usr/bin/env'
-    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-
-before_script:     
+.puppet_lint:
+  image:
+    name: ruby
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  script:
     - echo $GEM_HOME
     - export PATH="$GEM_HOME/bin:$PATH"
     - gem install puppet-lint
-
-
-.puppet_lint:
-  script:
     - find . -type f -name '*.pp' -print0 | xargs -t0n1 puppet-lint
