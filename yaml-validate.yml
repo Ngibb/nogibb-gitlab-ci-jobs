@@ -1,5 +1,5 @@
 .yamllint_default:
-        image: python:buster
+  image: python:buster
   script:
     - pip install yamllint
     - find . -type f \( -name '*.yaml' -o -name '*.yml' \) | xargs yamllint
