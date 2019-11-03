@@ -1,4 +1,5 @@
 .yamllint_default:
+  image: debian:latest
   script:
     - apt-get install -y yamllint
     - find . -type f \( -name '*.yaml' -o -name '*.yml' \) | xargs yamllint
