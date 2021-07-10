@@ -1,0 +1,44 @@
+# # # # # # 
+# TerraForm
+# # # # # #
+.terraform:
+  variables:
+    TERRAFORM_IMAGE_TAG: 'hashicorp/terraform' 
+  image:
+    name: $TERRAFORM_IMAGE_TAG
+    entrypoint: ["/bin/bash", "-l", "-c"]
+  before_script:
+    - terraform version
+    - set -x
+
+# TF Lint
+.tf_format_check:
+  extends:
+    .terraform
+  variables:
+    AWS_DEFAULT_REGION: us-west-2
+  script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
+    - terraform init -backend=false
+    - terraform fmt -check -diff
+
+# TF Validate
+.tf_validate_check:
+  extends:
+    .terraform
+  variables:
+    AWS_DEFAULT_REGION: us-west-2
+  script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
+    - terraform init -backend=false
+    - terraform version
+    - terraform validate
+
+# TF Security 
+.tf_sec_check:
+  image:
+    name: 'tfsec/tfsec'
+  #variables:
+  #  TFSEC_EXCEPTIONS_FLAG: -e AWS007,AWS009,AWS014,AWS018
+  script:
+    - tfsec $TFSEC_EXCEPTIONS_FLAG
