@@ -6,7 +6,7 @@
     TERRAFORM_IMAGE_TAG: 'hashicorp/terraform' 
   image:
     name: $TERRAFORM_IMAGE_TAG
-    entrypoint: ["/bin/bash", "-l", "-c"]
+    entrypoint: ["/bin/sh", "-l", "-c"]
   before_script:
     - terraform version
     - set -x
