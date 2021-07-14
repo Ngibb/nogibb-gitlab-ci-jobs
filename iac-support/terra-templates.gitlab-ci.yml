@@ -15,8 +15,6 @@
 .tf_format_check:
   extends:
     .terraform
-  variables:
-    AWS_DEFAULT_REGION: us-west-2
   script:
     - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
     - terraform init -backend=false
@@ -26,8 +24,6 @@
 .tf_validate_check:
   extends:
     .terraform
-  variables:
-    AWS_DEFAULT_REGION: us-west-2
   script:
     - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
     - terraform init -backend=false
@@ -42,3 +38,32 @@
   #  TFSEC_EXCEPTIONS_FLAG: -e AWS007,AWS009,AWS014,AWS018
   script:
     - tfsec $TFSEC_EXCEPTIONS_FLAG
+
+# TF apply
+.tf_plan_template:
+  extends:
+    .terraform
+  script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
+    - terraform version
+    - terraform plan
+
+# TF apply
+.tf_apply_template:
+  extends:
+    .terraform
+  script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
+    - terraform version
+    - terraform apply -auto-approve
+  when: manual
+
+# TF destroy
+.tf_destroy_template:
+  extends:
+    .terraform
+  script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
+    - terraform version
+    - terraform destroy -auto-approve
+  when: manual
