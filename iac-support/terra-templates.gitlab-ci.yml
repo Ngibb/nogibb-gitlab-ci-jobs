@@ -34,6 +34,7 @@
 .tf_sec_check:
   image:
     name: 'tfsec/tfsec'
+    entrypoint: ["/bin/sh", "-l", "-c"]
   #variables:
   #  TFSEC_EXCEPTIONS_FLAG: -e AWS007,AWS009,AWS014,AWS018
   script:
