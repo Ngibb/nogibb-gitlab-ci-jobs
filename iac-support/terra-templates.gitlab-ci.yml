@@ -93,6 +93,7 @@
     - terraform version
     - terraform init
     - terraform destroy -auto-approve
-    - export EMPTY_TF_WORKSPACE=$TF_WORKSPACE 
+    - export EMPTY_TF_WORKSPACE=$TF_WORKSPACE
+    - unset TF_WORKSPACE 
     - terraform workspace select default
     - terraform workspace delete $EMPTY_TF_WORKSPACE
