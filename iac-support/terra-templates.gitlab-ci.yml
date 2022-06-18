@@ -37,6 +37,8 @@
     entrypoint: ["/bin/sh", "-l", "-c"]
   #variables:
   #  TFSEC_EXCEPTIONS_FLAG: -e AWS007,AWS009,AWS014,AWS018
+  before_script:
+    - set -x
   script:
     - tfsec $TFSEC_EXCEPTIONS_FLAG
 
@@ -48,6 +50,17 @@
     - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
     - terraform version
     - terraform init
+    - terraform plan
+
+.tf_plan_ws_template:
+  extends:
+    .tf_plan_template
+  script:
+    - unset TF_WORKSPACE
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
+    - terraform version
+    - terraform init -backend-config=bucket=$TF_STATE_BUCKET
+    - export TF_WORKSPACE=$CI_PIPELINE_ID
     - terraform plan
 
 # TF apply
@@ -71,3 +84,14 @@
     - terraform init
     - terraform destroy -auto-approve
   when: manual
+
+.tf_destroy_ws_template:
+  extends:
+    - .tf_destroy_template
+  script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
+    - terraform version
+    - terraform init
+    - terraform destroy -auto-approve
+    - terraform workspace select default
+    - terraform workspace delete $TF_WORKSPACE
